@@ -76,6 +76,10 @@ failing
   takeExampleFail : Tensor [10, 2] Double
   takeExampleFail = takeTensor [10, 2] t0
 
+||| Stacking tensors introduces a new leading axis
+stackExample : Tensor [2, 3, 4] Double
+stackExample = stack [t0, t0]
+
 
 ----------------------------------------
 -- Generalised tensor examples

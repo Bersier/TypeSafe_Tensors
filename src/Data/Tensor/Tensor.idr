@@ -878,8 +878,19 @@ namespace SliceTensor
     Tensor shape a ->
     Tensor (sliceToShape slice) a
   takeTensor [] (ToCubicalTensor (TZ val)) = ToCubicalTensor (TZ val)
-  takeTensor (s :: ss) (ToCubicalTensor (TS xs)) = ToCubicalTensor $ TS $ 
+  takeTensor (s :: ss) (ToCubicalTensor (TS xs)) = ToCubicalTensor $ TS $
     (\t => FromCubicalTensor ((takeTensor ss) (ToCubicalTensor t))) <$> takeFinVect' s xs
+
+namespace StackTensor
+  ||| Stack a vector of tensors along a new leading axis
+  public export
+  stackA : {shape : List ContA} -> Vect n (TensorA shape a) -> TensorA (Vect n :: shape) a
+  stackA ts = TS (fromVect ts)
+
+  ||| Stack a vector of cubical tensors along a new leading axis
+  public export
+  stack : {shape : List Nat} -> Vect n (Tensor shape a) -> Tensor (n :: shape) a
+  stack ts = ToCubicalTensor $ stackA (FromCubicalTensor <$> ts)
 
   -- namespace FullSlicing
   --   -- Supporting optional exclusion of an axis in slicing
